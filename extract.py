@@ -4,6 +4,14 @@ from pathlib import Path
 
 import requests
 
+import time
+
+DATA_URL = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
+DATUMS_URL = "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{station_id}/datums.json"
+
+BEGIN_DATE = "20260801"
+END_DATE = "20270731"
+
 STATIONS_URL = "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json"
 
 # Charlotte Harbor bounding box
@@ -41,11 +49,56 @@ def stations_in_box(raw_text):
         and MIN_LAT <= s["lat"] <= MAX_LAT
         and MIN_LNG <= s["lng"] <= MAX_LNG
     ]
+def latest_raw(subfolder):
+    """Most recent raw file in a folder, or None if there isn't one."""
+    files = sorted((RAW_DIR / subfolder).glob("*.json"))
+    return files[-1] if files else None
 
+
+def fetch_predictions(station_id):
+    params = {
+        "product": "predictions",
+        "station": station_id,
+        "begin_date": BEGIN_DATE,
+        "end_date": END_DATE,
+        "datum": "MLLW",
+        "interval": "hilo",
+        "units": "english",
+        "time_zone": "gmt",
+        "format": "json",
+        "application": "de_application",
+    }
+    response = requests.get(DATA_URL, params=params, timeout=60)
+    response.raise_for_status()
+    if "error" in response.json():
+        raise RuntimeError(f"{station_id}: {response.json()['error']['message']}")
+    return response.text
+
+
+def fetch_datums(station_id):
+    response = requests.get(DATUMS_URL.format(station_id=station_id), timeout=60)
+    if response.status_code == 404:
+        return None
+    response.raise_for_status()
+    return response.text
 
 if __name__ == "__main__":
-    raw = fetch_station_list()
-    path = save_raw(raw, "stations", "tidepredictions")
-    print(f"Saved {path}")
+    existing = latest_raw("stations")
+    if existing:
+        raw = existing.read_text(encoding="utf-8")
+        print(f"Using {existing}")
+    else:
+        raw = fetch_station_list()
+        print(f"Saved {save_raw(raw, 'stations', 'tidepredictions')}")
+
     for s in stations_in_box(raw):
-        print(s["id"], s["type"], s["lat"], s["lng"], s["name"])
+        station_id = s["id"]
+        print(f"Saved {save_raw(fetch_predictions(station_id), 'predictions', station_id)}")
+        time.sleep(1)
+
+        datums = fetch_datums(station_id)
+        if datums is None:
+            print(f"No datums for {station_id}, skipped")
+        else:
+            print(f"Saved {save_raw(datums, 'datums', station_id)}")
+        time.sleep(1)

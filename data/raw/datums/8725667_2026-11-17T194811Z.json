@@ -1,0 +1,106 @@
+{
+  "accepted": "Apr 24 2012",
+  "superseded": "",
+  "epoch": "1983-2001",
+  "units": "feet",
+  "OrthometricDatum": "NAVD88",
+  "datums": [
+    {
+      "name": "STND",
+      "description": "Station Datum",
+      "value": 0.0
+    },
+    {
+      "name": "MHHW",
+      "description": "Mean Higher-High Water",
+      "value": 4.66
+    },
+    {
+      "name": "MHW",
+      "description": "Mean High Water",
+      "value": 4.43
+    },
+    {
+      "name": "DTL",
+      "description": "Mean Diurnal Tide Level",
+      "value": 3.96
+    },
+    {
+      "name": "MTL",
+      "description": "Mean Tide Level",
+      "value": 4.03
+    },
+    {
+      "name": "MSL",
+      "description": "Mean Sea Level",
+      "value": 4.04
+    },
+    {
+      "name": "MLW",
+      "description": "Mean Low Water",
+      "value": 3.62
+    },
+    {
+      "name": "MLLW",
+      "description": "Mean Lower-Low Water",
+      "value": 3.26
+    },
+    {
+      "name": "GT",
+      "description": "Great Diurnal Range",
+      "value": 1.41
+    },
+    {
+      "name": "MN",
+      "description": "Mean Range of Tide",
+      "value": 0.82
+    },
+    {
+      "name": "DHQ",
+      "description": "Mean Diurnal High Water Inequality",
+      "value": 0.23
+    },
+    {
+      "name": "DLQ",
+      "description": "Mean Diurnal Low Water Inequality",
+      "value": 0.36
+    },
+    {
+      "name": "HWI",
+      "description": "Greenwich High Water Interval (in hours)",
+      "value": 6.29
+    },
+    {
+      "name": "LWI",
+      "description": "Greenwich Low Water Interval (in hours)",
+      "value": 12.06
+    },
+    {
+      "name": "NAVD88",
+      "description": "North American Vertical Datum of 1988",
+      "value": 4.53
+    }
+  ],
+  "LAT": null,
+  "LATdate": "",
+  "LATtime": "",
+  "HAT": null,
+  "HATdate": "",
+  "HATtime": "",
+  "min": null,
+  "mindate": "",
+  "mintime": "",
+  "max": null,
+  "maxdate": "",
+  "maxtime": "",
+  "disclaimers": {
+    "disclaimers": [],
+    "self": null
+  },
+  "DatumAnalysisPeriod": [
+    "08/01/1977 - 12/31/1977"
+  ],
+  "NGSLink": "",
+  "ctrlStation": "8725744 Punta Gorda, FL",
+  "self": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/8725667/datums.json"
+}

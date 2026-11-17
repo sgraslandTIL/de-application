@@ -1,0 +1,101 @@
+{
+  "accepted": "Jul 31 2003",
+  "superseded": "",
+  "epoch": "1983-2001",
+  "units": "feet",
+  "OrthometricDatum": "NAVD88",
+  "datums": [
+    {
+      "name": "STND",
+      "description": "Station Datum",
+      "value": 0.0
+    },
+    {
+      "name": "MHHW",
+      "description": "Mean Higher-High Water",
+      "value": 3.38
+    },
+    {
+      "name": "MHW",
+      "description": "Mean High Water",
+      "value": 3.15
+    },
+    {
+      "name": "DTL",
+      "description": "Mean Diurnal Tide Level",
+      "value": 2.6
+    },
+    {
+      "name": "MTL",
+      "description": "Mean Tide Level",
+      "value": 2.68
+    },
+    {
+      "name": "MSL",
+      "description": "Mean Sea Level",
+      "value": 2.69
+    },
+    {
+      "name": "MLW",
+      "description": "Mean Low Water",
+      "value": 2.21
+    },
+    {
+      "name": "MLLW",
+      "description": "Mean Lower-Low Water",
+      "value": 1.82
+    },
+    {
+      "name": "GT",
+      "description": "Great Diurnal Range",
+      "value": 1.56
+    },
+    {
+      "name": "MN",
+      "description": "Mean Range of Tide",
+      "value": 0.93
+    },
+    {
+      "name": "DHQ",
+      "description": "Mean Diurnal High Water Inequality",
+      "value": 0.23
+    },
+    {
+      "name": "DLQ",
+      "description": "Mean Diurnal Low Water Inequality",
+      "value": 0.39
+    },
+    {
+      "name": "HWI",
+      "description": "Greenwich High Water Interval (in hours)",
+      "value": 6.19
+    },
+    {
+      "name": "LWI",
+      "description": "Greenwich Low Water Interval (in hours)",
+      "value": 11.3
+    }
+  ],
+  "LAT": 0.951,
+  "LATdate": "20230121",
+  "LATtime": "11:54",
+  "HAT": 4.17,
+  "HATdate": "20251107",
+  "HATtime": "04:42",
+  "min": null,
+  "mindate": "",
+  "mintime": "",
+  "max": null,
+  "maxdate": "",
+  "maxtime": "",
+  "disclaimers": {
+    "disclaimers": [],
+    "self": null
+  },
+  "DatumAnalysisPeriod": [
+    "10/01/1977 - 05/31/1978"
+  ],
+  "NGSLink": "",
+  "ctrlStation": "8725110 Naples, FL",
+  "self": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/8725577/datums.json"
+}
