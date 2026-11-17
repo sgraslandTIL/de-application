@@ -3,10 +3,17 @@
 # Charlotte Harbor king tide alerts
 
 ## What I built and who for
-I built this alert system for marinas. Boat owners can sometimes store their boats in marinas that are not in the same area as their home. They may not know that a strong tide is coming in and cause cause damage if precautions aren't taken. This alert would give them 3 days notice of a strong tide coming in. 
+
+I built this alert system for boat owners who keep their boats at marinas and docks around Charlotte Harbor, Florida. Many of them live somewhere else, sometimes out of state, so they may not know a king tide (an unusually high tide) is coming until it has already caused damage. The alert gives them three days' notice of a predicted high tide. That's enough time to travel down or arrange help to add slack to dock lines and move items off the dock. Because the alert uses tide predictions, wind or rain can push the real water higher.
 
 ## The data
-NOAA CO-OPS API
+
+I used the [NOAA CO-OPS API](https://api.tidesandcurrents.noaa.gov/api/prod/). From it, I pulled:
+
+- High and low tide predictions from the data API
+- Station datums from the metadata API
+
+This data is in the US public domain, so it can be published.
 
 ## How it works
 
