@@ -49,9 +49,9 @@ def stations_in_box(raw_text):
         and MIN_LAT <= s["lat"] <= MAX_LAT
         and MIN_LNG <= s["lng"] <= MAX_LNG
     ]
-def latest_raw(subfolder):
+def latest_raw(subfolder, prefix=""):
     """Most recent raw file in a folder, or None if there isn't one."""
-    files = sorted((RAW_DIR / subfolder).glob("*.json"))
+    files = sorted((RAW_DIR / subfolder).glob(f"{prefix}*.json"))
     return files[-1] if files else None
 
 
@@ -90,15 +90,22 @@ if __name__ == "__main__":
     else:
         raw = fetch_station_list()
         print(f"Saved {save_raw(raw, 'stations', 'tidepredictions')}")
-
+    
     for s in stations_in_box(raw):
         station_id = s["id"]
-        print(f"Saved {save_raw(fetch_predictions(station_id), 'predictions', station_id)}")
-        time.sleep(1)
 
-        datums = fetch_datums(station_id)
-        if datums is None:
-            print(f"No datums for {station_id}, skipped")
+        if latest_raw("predictions", f"{station_id}_"):
+            print(f"Predictions for {station_id} already saved, skipped")
         else:
-            print(f"Saved {save_raw(datums, 'datums', station_id)}")
-        time.sleep(1)
+            print(f"Saved {save_raw(fetch_predictions(station_id), 'predictions', station_id)}")
+            time.sleep(1)
+
+        if latest_raw("datums", f"{station_id}_"):
+            print(f"Datums for {station_id} already saved, skipped")
+        else:
+            datums = fetch_datums(station_id)
+            if datums is None:
+                print(f"No datums for {station_id}, skipped")
+            else:
+                print(f"Saved {save_raw(datums, 'datums', station_id)}")
+            time.sleep(1)
