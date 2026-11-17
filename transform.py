@@ -7,6 +7,7 @@ DB_PATH = "tides.duckdb"
 SQL_FILES = [
     "sql/staging/stg_predictions.sql",
     "sql/staging/stg_datums.sql",
+    "sql/staging/stg_stations.sql",
 ]
 
 def main():
