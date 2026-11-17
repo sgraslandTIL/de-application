@@ -221,3 +221,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# DuckDB database, rebuilt from data/raw
+*.duckdb
+*.duckdb.wal
