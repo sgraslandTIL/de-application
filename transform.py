@@ -6,8 +6,8 @@ DB_PATH = "tides.duckdb"
 
 SQL_FILES = [
     "sql/staging/stg_predictions.sql",
+    "sql/staging/stg_datums.sql",
 ]
-
 
 def main():
     con = duckdb.connect(DB_PATH)
