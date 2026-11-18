@@ -11,7 +11,8 @@ SQL_FILES = [
     "sql/staging/stg_predictions.sql",
     "sql/staging/stg_datums.sql",
     "sql/staging/stg_stations.sql",
-    "sql/mart/mart_high_tides.sql"
+    "sql/mart/mart_high_tides.sql",
+    "sql/mart/mart_alerts.sql"
 ]
 
 def run_tests(con):
