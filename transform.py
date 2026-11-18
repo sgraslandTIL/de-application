@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import duckdb
+import sys
 
 TEST_FILES = sorted(Path("sql/tests").glob("*.sql"))
 
