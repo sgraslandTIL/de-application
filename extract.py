@@ -1,22 +1,16 @@
-import json
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
 
-import time
-
-DATA_URL = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
-DATUMS_URL = "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{station_id}/datums.json"
+STATION_ID = "8725577"  # Port Boca Grande, Charlotte Harbor
 
 BEGIN_DATE = "20260801"
 END_DATE = "20270731"
 
-STATIONS_URL = "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json"
-
-# Charlotte Harbor bounding box
-MIN_LAT, MAX_LAT = 26.7000, 27.0090
-MIN_LNG, MAX_LNG = -82.2800, -81.9597
+STATION_URL = f"https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/{STATION_ID}"
+DATA_URL = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
 
 RAW_DIR = Path("data/raw")
 
@@ -26,39 +20,29 @@ def pulled_at():
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H%M%SZ")
 
 
-def save_raw(text, subfolder, name):
+def save_raw(text, subfolder):
     """Save a response exactly as the API returned it."""
     folder = RAW_DIR / subfolder
     folder.mkdir(parents=True, exist_ok=True)
-    path = folder / f"{name}_{pulled_at()}.json"
+    path = folder / f"{STATION_ID}_{pulled_at()}.json"
     path.write_text(text, encoding="utf-8")
     return path
 
 
-def fetch_station_list():
-    response = requests.get(STATIONS_URL, params={"type": "tidepredictions"}, timeout=60)
+def already_saved(subfolder):
+    return any((RAW_DIR / subfolder).glob(f"{STATION_ID}_*.json"))
+
+
+def fetch_station():
+    response = requests.get(f"{STATION_URL}.json", timeout=60)
     response.raise_for_status()
     return response.text
 
 
-def stations_in_box(raw_text):
-    stations = json.loads(raw_text)["stations"]
-    return [
-        s for s in stations
-        if s["lat"] is not None and s["lng"] is not None
-        and MIN_LAT <= s["lat"] <= MAX_LAT
-        and MIN_LNG <= s["lng"] <= MAX_LNG
-    ]
-def latest_raw(subfolder, prefix=""):
-    """Most recent raw file in a folder, or None if there isn't one."""
-    files = sorted((RAW_DIR / subfolder).glob(f"{prefix}*.json"))
-    return files[-1] if files else None
-
-
-def fetch_predictions(station_id):
+def fetch_predictions():
     params = {
         "product": "predictions",
-        "station": station_id,
+        "station": STATION_ID,
         "begin_date": BEGIN_DATE,
         "end_date": END_DATE,
         "datum": "MLLW",
@@ -71,41 +55,27 @@ def fetch_predictions(station_id):
     response = requests.get(DATA_URL, params=params, timeout=60)
     response.raise_for_status()
     if "error" in response.json():
-        raise RuntimeError(f"{station_id}: {response.json()['error']['message']}")
+        raise RuntimeError(response.json()["error"]["message"])
     return response.text
 
 
-def fetch_datums(station_id):
-    response = requests.get(DATUMS_URL.format(station_id=station_id), timeout=60)
-    if response.status_code == 404:
-        return None
+def fetch_datums():
+    response = requests.get(f"{STATION_URL}/datums.json", timeout=60)
     response.raise_for_status()
     return response.text
 
+
+STEPS = [
+    ("stations", fetch_station),
+    ("predictions", fetch_predictions),
+    ("datums", fetch_datums),
+]
+
+
 if __name__ == "__main__":
-    existing = latest_raw("stations")
-    if existing:
-        raw = existing.read_text(encoding="utf-8")
-        print(f"Using {existing}")
-    else:
-        raw = fetch_station_list()
-        print(f"Saved {save_raw(raw, 'stations', 'tidepredictions')}")
-    
-    for s in stations_in_box(raw):
-        station_id = s["id"]
-
-        if latest_raw("predictions", f"{station_id}_"):
-            print(f"Predictions for {station_id} already saved, skipped")
-        else:
-            print(f"Saved {save_raw(fetch_predictions(station_id), 'predictions', station_id)}")
-            time.sleep(1)
-
-        if latest_raw("datums", f"{station_id}_"):
-            print(f"Datums for {station_id} already saved, skipped")
-        else:
-            datums = fetch_datums(station_id)
-            if datums is None:
-                print(f"No datums for {station_id}, skipped")
-            else:
-                print(f"Saved {save_raw(datums, 'datums', station_id)}")
-            time.sleep(1)
+    for subfolder, fetch in STEPS:
+        if already_saved(subfolder):
+            print(f"{subfolder} for {STATION_ID} already saved, skipped")
+            continue
+        print(f"Saved {save_raw(fetch(), subfolder)}")
+        time.sleep(1)

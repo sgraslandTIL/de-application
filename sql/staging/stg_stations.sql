@@ -15,9 +15,7 @@ unnested as (
 select
     s.id as station_id,
     s.name as station_name,
-    case s.type when 'R' then 'reference' when 'S' then 'subordinate' end as station_type,
-    nullif(s.reference_id, '') as reference_station_id,
+    s.tideType as tide_type,
     round(s.lat, 4) as latitude,
     round(s.lng, 4) as longitude
 from unnested
-where s.id in (select distinct station_id from stg_predictions)
