@@ -84,7 +84,7 @@ The threshold stays fixed on purpose. Think of it as a line painted on a dock po
 ### Other decisions
 
 - **Times are stored in GMT and converted to Florida time only for the alert.** Local time repeats an hour in November and skips one in March, which could duplicate or lose a tide.
-- **One alert per king tide, not per day.** Consecutive days above the threshold become one event, and a single day just below the line doesn't split it. The water is still high on that day, and an owner planning a trip needs to know the whole span.
+- **One alert per king tide, not per day.** Consecutive days above the threshold become one event, and a single day without a crossing high tide doesn't split it. High tides arrive about 50 minutes later each day, so occasionally a calendar day has none at all. At Port Boca Grande, the November king tide's highs fall at 11:39 PM on the 25th and 12:24 AM on the 27th, so the 26th has no high tide, and the event continues across it. An owner planning a trip needs to know the whole span.
 - **The alert goes out three days before the first day of the event,** not the peak, because owners need to act before the water rises.
 - **Heights are rounded to three decimals,** NOAA's published precision. I first rounded to two, and a check against my calibration query showed four tides on the wrong side of the threshold. Rounding to three fixed it without losing real information.
 - **Messages give the height in inches above a normal high tide,** because "0.726 feet above Mean Higher High Water" means nothing to a boat owner.
