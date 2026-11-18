@@ -10,6 +10,25 @@ Public flood alerts don't cover this well. NOAA's flood thresholds are set for w
 
 This is a proof of concept for one station. I started with eight stations across Charlotte Harbor, but the three stations NOAA predicts from a station outside the harbor never crossed my threshold. Rather than ship an alert that silently never fires for some marinas, I scoped it down to one station I could stand behind.
 
+### What a boat owner receives
+
+Here's the alert for the late-November king tide, sent on Saturday, November 21, 2026:
+
+> King tide alert for Port Boca Grande: unusually high tides are predicted from Tuesday, November 24 to Friday, November 27. The highest tide is expected Wednesday, November 25 at 11:39 PM, about 9 inches above a normal high tide. Add slack to your dock lines and move anything stored on the dock. Wind can push the water higher than predicted.
+
+Over the year from August 2026 to July 2027, the pipeline produces six alerts:
+
+| Alert sent | High tides expected | Peak |
+|---|---|---|
+| Aug 7, 2026 | Aug 10 to 11 | 8 inches, Aug 11 at 11:39 AM |
+| Sep 28, 2026 | Oct 1 to 2 | 7 inches, Oct 1 at 2:32 AM |
+| Oct 24, 2026 | Oct 27 to 30 | 9 inches, Oct 29 at 1:29 AM |
+| Nov 21, 2026 | Nov 24 to 27 | 9 inches, Nov 25 at 11:39 PM |
+| Jun 30, 2027 | Jul 3 to 4 | 8 inches, Jul 4 at 12:28 PM |
+| Jul 28, 2027 | Jul 31 | 7 inches, Jul 31 at 10:46 AM |
+
+Every alert is in `output/alerts.csv`, and you can reproduce them with the steps in "How to run it."
+
 ## The data
 
 I used two NOAA CO-OPS APIs, which need no key:
