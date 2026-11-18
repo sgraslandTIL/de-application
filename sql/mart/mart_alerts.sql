@@ -1,6 +1,10 @@
 create or replace table mart_alerts as
 
-with crossing_days as (
+with settings as (
+    select 1 as max_gap_days
+),
+
+crossing_days as (
     select
         station_id,
         station_name,
@@ -12,13 +16,33 @@ with crossing_days as (
     group by station_id, station_name, tide_date_local
 ),
 
-islands as (
+gaps as (
     select
         *,
-        tide_date_local - cast(row_number() over (
+        tide_date_local - lag(tide_date_local) over (
             partition by station_id order by tide_date_local
-        ) as integer) as event_key
+        ) as days_since_previous
     from crossing_days
+),
+
+flagged as (
+    select
+        *,
+        case
+            when days_since_previous is null then 1
+            when days_since_previous > (select max_gap_days from settings) + 1 then 1
+            else 0
+        end as starts_event
+    from gaps
+),
+
+numbered as (
+    select
+        *,
+        sum(starts_event) over (
+            partition by station_id order by tide_date_local
+        ) as event_number
+    from flagged
 ),
 
 events as (
@@ -27,11 +51,12 @@ events as (
         any_value(station_name) as station_name,
         min(tide_date_local) as first_day,
         max(tide_date_local) as last_day,
-        count(*) as days,
+        count(*) as crossing_days,
+        max(tide_date_local) - min(tide_date_local) + 1 as span_days,
         max(peak_above_mhhw_ft) as peak_above_mhhw_ft,
         arg_max(peak_tide_at_local, peak_above_mhhw_ft) as peak_tide_at_local
-    from islands
-    group by station_id, event_key
+    from numbered
+    group by station_id, event_number
 )
 
 select
@@ -40,7 +65,8 @@ select
     station_name,
     first_day,
     last_day,
-    days,
+    crossing_days,
+    span_days,
     peak_tide_at_local,
     peak_above_mhhw_ft,
     first_day - 3 as send_date
