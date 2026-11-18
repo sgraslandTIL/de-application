@@ -71,11 +71,11 @@ I chose 0.6 feet by testing several margins against a year of predictions (see `
 
 | Margin | Events (alerts) | Days over the line |
 |---|---|---|
-| 0.50 ft | ? | ? |
-| 0.55 ft | ? | ? |
+| 0.50 ft | 9 | 32 |
+| 0.55 ft | 8 | 24 |
 | 0.60 ft | 6 | 14 |
-| 0.65 ft | ? | ? |
-| 0.70 ft | ? | ? |
+| 0.65 ft | 2 | 6 |
+| 0.70 ft | 2 | 4 |
 
 At 0.6 feet, owners get six alerts a year, covering 14 days of high tides. That's rare enough to take seriously. It also leaves room for wind, which can push real water higher than predicted. A tide exactly at 0.6 feet counts, because it carries the same risk as one just above it.
 
