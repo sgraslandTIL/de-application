@@ -67,17 +67,17 @@ The pipeline runs in three steps, and only the first one talks to NOAA.
 
 An alert fires when a predicted high tide reaches 0.6 feet or more above Mean Higher High Water, the average height of the day's highest tide. This is a boating advisory, not a flood warning. Docks and boats feel high water much sooner than land does: lines tighten and fixed docks lose clearance long before a road floods. I grew up on the water, and more than once I pulled into the marina to find the tide higher than I expected and had to rush to fix the lines. That's the moment this alert is meant to prevent.
 
-I chose 0.6 feet by counting how often each margin was crossed over a year of predictions (see `analysis/threshold_calibration.sql`):
+I chose 0.6 feet by testing several margins against a year of predictions (see `analysis/threshold_calibration.sql`). An event is a run of days with a high tide over the line, and each event gets one alert:
 
-| Margin | Days crossing |
-|---|---|
-| 0.50 ft | 32 |
-| 0.55 ft | 24 |
-| 0.60 ft | 14 |
-| 0.65 ft | 6 |
-| 0.70 ft | 4 |
+| Margin | Events (alerts) | Days over the line |
+|---|---|---|
+| 0.50 ft | ? | ? |
+| 0.55 ft | ? | ? |
+| 0.60 ft | 6 | 14 |
+| 0.65 ft | ? | ? |
+| 0.70 ft | ? | ? |
 
-At 0.6 feet, Port Boca Grande has about six events a year, which is rare enough to take seriously. It also leaves room for wind, which can push real water higher than predicted. A tide exactly at 0.6 feet counts, because it carries the same risk as one just above it.
+At 0.6 feet, owners get six alerts a year, covering 14 days of high tides. That's rare enough to take seriously. It also leaves room for wind, which can push real water higher than predicted. A tide exactly at 0.6 feet counts, because it carries the same risk as one just above it.
 
 The threshold stays fixed on purpose. Think of it as a line painted on a dock post. If the sea rises over the years, water reaches the line more often, and owners get more alerts. That's right, because their boats really are at risk more often. If I repainted the line every year to keep the same number of alerts, I'd have to paint it higher as the water rose, and the alert would hide the change.
 
