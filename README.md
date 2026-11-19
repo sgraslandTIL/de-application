@@ -65,7 +65,13 @@ The pipeline runs in three steps, and only the first one talks to NOAA.
 
 ### The alert threshold
 
-An alert fires when a predicted high tide reaches 0.6 feet or more above Mean Higher High Water, the average height of the day's highest tide. This is a boating advisory, not a flood warning. Docks and boats feel high water much sooner than land does: lines tighten and fixed docks lose clearance long before a road floods. I grew up on the water, and more than once I pulled into the marina to find the tide higher than I expected and had to rush to fix the lines. That's the moment this alert is meant to prevent.
+NOAA reports every predicted tide as a height above Mean Lower Low Water, the average of each day's lowest tide. That tells you how high a tide is, but not whether it's unusual.
+
+So I compare each high tide to Mean Higher High Water instead: the average of each day's highest tide, or a normal high tide. I don't calculate this average. NOAA publishes it for each station, averaged over 19 years so it covers the moon's full 18.6-year cycle, and the pipeline pulls it from the metadata API. At Port Boca Grande, a normal high tide sits 1.56 feet above the average low, so subtracting 1.56 feet from a prediction shows how far that tide rises above normal.
+
+An alert fires when a high tide reaches 0.6 feet or more above normal. A tide exactly at 0.6 feet counts, because it carries the same risk as one just above it.
+
+This is a boating advisory, not a flood warning. Docks and boats feel high water much sooner than land does: lines tighten and fixed docks lose clearance long before a road floods. I grew up on the water, and more than once I pulled into the marina to find the tide higher than I expected and had to rush to fix the lines. That's the moment this alert is meant to prevent.
 
 I chose 0.6 feet by testing several margins against a year of predictions (see `analysis/threshold_calibration.sql`). An event is a run of days with a high tide over the line, and each event gets one alert:
 
@@ -77,7 +83,7 @@ I chose 0.6 feet by testing several margins against a year of predictions (see `
 | 0.65 ft | 2 | 6 |
 | 0.70 ft | 2 | 4 |
 
-At 0.6 feet, owners get six alerts a year, covering 14 days of high tides. That's rare enough to take seriously. It also leaves room for wind, which can push real water higher than predicted. A tide exactly at 0.6 feet counts, because it carries the same risk as one just above it.
+At 0.5 feet, owners would get nine alerts a year covering 32 days. That's often enough that they might start ignoring them. At 0.65 feet and above, only two alerts are left. That drops tides that still run well above normal, and wind can push real water higher than predicted. At 0.6 feet, owners get six alerts a year covering 14 days of high tides: rare enough to take seriously, with room left for wind.
 
 The threshold stays fixed on purpose. Think of it as a line painted on a dock post. If the sea rises over the years, water reaches the line more often, and owners get more alerts. That's right, because their boats really are at risk more often. If I repainted the line every year to keep the same number of alerts, I'd have to paint it higher as the water rose, and the alert would hide the change.
 
