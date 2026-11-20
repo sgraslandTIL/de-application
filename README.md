@@ -59,7 +59,7 @@ The pipeline runs in three steps, and only the first one talks to NOAA.
 |---|---|---|
 | Staging | `stg_predictions` | One row per tide, with the time as a timestamp, the height as a number, and `high` or `low`. If the same tide appears in more than one pull, it keeps the most recent. |
 | Staging | `stg_datums` | One row per station, with the gap between Mean Higher High Water and Mean Lower Low Water. At Port Boca Grande, that's 1.56 feet. |
-| Staging | `stg_stations` | The station's ID, name, tide type, and coordinates. |
+| Staging | `stg_stations` | The station's ID, name, tidal pattern, and coordinates. For each station, it keeps the most recent pull. |
 | Mart | `mart_high_tides` | Every high tide, its height above a normal high tide, its time in Florida, and whether it crosses the threshold. |
 | Mart | `mart_alerts` | One row per king tide event, with its first and last day, its peak, and the date the alert goes out. |
 
