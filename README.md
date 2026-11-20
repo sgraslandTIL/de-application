@@ -142,6 +142,12 @@ python alerts.py --date 2026-11-21
 
 `extract.py` pulls data from NOAA. You don't need to run it, because the raw data is already committed, and it skips anything already saved. To pull fresh data, delete Port Boca Grande's files from `data/raw/` first, then run `python extract.py`.
 
+To reproduce the threshold table, run the calibration query after `transform.py`:
+
+```
+python -c "import duckdb; print(duckdb.connect('tides.duckdb').sql(open('analysis/threshold_calibration.sql').read()))"
+```
+
 ## What I would do next
 
 - **Send the alerts for real.** Connect an email or text service and a sign-up form, with the credentials kept out of the repository. I'd also build a Tableau Pulse metric on the alerts, so owners can follow it.
