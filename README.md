@@ -103,7 +103,7 @@ To check what happens on a second run, I copied the predictions file under a lat
 
 ### What this shape makes easy and hard
 
-It's easy to change the threshold or the gap rule, since each is one number at the top of its SQL file. It's harder to bring in weather, since the tables only know predicted tides, or to alert by marina, since nothing maps marinas to stations yet.
+It's easy to change the threshold, the gap rule, or how many days ahead an alert goes out, since each is one number at the top of its SQL file.
 
 ## How to run it
 
